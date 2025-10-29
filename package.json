@@ -1,0 +1,12 @@
+{
+    "private": true,
+    "workspaces": ["frontend","backend"],
+  "scripts": {
+    "fe": "npm run start -w frontend",
+    "be": "npm run dev -w backend",
+    "dev": "concurrently -n FE,BE -c auto \"npm run fe\" \"npm run be\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

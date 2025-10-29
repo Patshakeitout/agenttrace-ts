@@ -1,0 +1,61 @@
+# --- OS / Editors ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.orig
+.vscode/
+.idea/
+
+# --- Node / Package managers ---
+node_modules/
+pnpm-lock.yaml.*
+yarn-error.log
+
+# --- Logs & Coverage ---
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+logs/
+coverage/
+lcov-report/
+
+# --- Environment (keep real secrets out) ---
+.env
+.env.*
+!.env.example
+
+# --- Root build caches ---
+dist/
+tmp/
+.cache/
+*.tsbuildinfo
+
+# --- Angular (frontend) ---
+frontend/.angular/cache/
+frontend/.cache/
+frontend/dist/
+frontend/tmp/
+frontend/src/**/*.js
+frontend/src/**/*.map
+
+# --- Angular test artifacts (optional) ---
+frontend/.karma/
+frontend/coverage/
+
+# --- Backend (Node/TS) ---
+backend/dist/
+backend/build/
+backend/tmp/
+backend/.cache/
+backend/*.tsbuildinfo
+
+# --- Runtime data ---
+*.pid
+*.seed
+*.pid.lock
+
+# --- IMPORTANT: do NOT ignore package-lock.json ---
+# Keep package-lock.json committed for reproducible builds.
