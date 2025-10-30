@@ -1,12 +1,23 @@
 {
     "private": true,
-    "workspaces": ["frontend","backend"],
-  "scripts": {
-    "fe": "npm run start -w frontend",
-    "be": "npm run dev -w backend",
-    "dev": "concurrently -n FE,BE -c auto \"npm run fe\" \"npm run be\""
-  },
-  "devDependencies": {
-    "concurrently": "^9.2.1"
-  }
+    "workspaces": [
+        "frontend",
+        "backend"
+    ],
+    "scripts": {
+        "fe": "npm run start -w frontend",
+        "be": "npm run dev -w backend",
+        "dev": "concurrently -n FE,BE -c auto \"npm run fe\" \"npm run be\""
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.4.21",
+        "concurrently": "^9.2.1",
+        "postcss": "^8.5.6",
+        "tailwindcss": "^4.1.16"
+    },
+    "dependencies": {
+        "@angular/common": "^19.2.15",
+        "@angular/core": "^19.2.15",
+        "@angular/router": "^19.2.15"
+    }
 }

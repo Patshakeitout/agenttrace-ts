@@ -1,0 +1,33 @@
+<main class="chat-container">
+    <header class="chat-header" role="banner">
+        <h1>AgentTrace · Chat</h1>
+    </header>
+
+    <section class="chat-section" role="region" aria-label="Chat messages">
+        <mat-card>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item *ngFor="let msg of messages">
+                        <div [ngClass]="msg.from" class="bubble">
+                            {{ msg.text }}
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </section>
+
+    <section class="chat-input" role="form">
+        <mat-form-field appearance="outline" class="input-field">
+            <input matInput placeholder="Type your message…" [(ngModel)]="input" (keyup.enter)="send()" />
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" (click)="send()" [disabled]="!input.trim()">
+            Send
+        </button>
+    </section>
+
+    <footer class="chat-footer" role="contentinfo">
+        &copy; {{ currentYear }} AgentTrace TS
+    </footer>
+</main>
