@@ -2,12 +2,19 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// Material modules
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+// Material
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
+
+import { ChatService, ChatResponse } from '../../features/chat/chat.service';
+
+interface ChatMessage {
+  from: 'user' | 'agent';
+  text: string;
+}
 
 @Component({
   selector: 'app-chat-page',
@@ -15,33 +22,48 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     FormsModule,
-    MatCardModule,
-    MatButtonModule,
+    MatFormFieldModule,
     MatInputModule,
-    MatListModule,
-    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatListModule
   ],
   templateUrl: './chat-page.component.html',
-  styleUrl: './chat-page.component.scss',
+  styleUrls: ['./chat-page.component.scss']
 })
 export class ChatPageComponent {
   input = '';
-  messages: { text: string; from: 'user' | 'agent' }[] = [];
+  messages: ChatMessage[] = [];
   currentYear = new Date().getFullYear();
+  loading = false;
+
+  constructor(private chatService: ChatService) {}
 
   send(): void {
-    if (!this.input.trim()) return;
-    this.messages.push({ text: this.input, from: 'user' });
+    const prompt = this.input.trim();
+    if (!prompt) return;
 
-    // Mock agent response
-    setTimeout(() => {
-      this.messages.push({
-        text: '🤖 Agent received: ' + this.input,
-        from: 'agent',
-      });
-    }, 400);
-
+    // Add user message immediately
+    this.messages.push({ from: 'user', text: prompt });
     this.input = '';
+    this.loading = true;
+
+    this.chatService.sendPrompt(prompt).subscribe({
+      next: (res: ChatResponse) => {
+        this.loading = false;
+        // Add agent reply
+        this.messages.push({ from: 'agent', text: res.reply });
+
+        // Optional: show trace info in console for debugging
+        console.log('Trace:', res.trace);
+      },
+      error: (err) => {
+        this.loading = false;
+        this.messages.push({
+          from: 'agent',
+          text: '⚠️ Fehler bei der Anfrage: ' + err.message
+        });
+      }
+    });
   }
 }
-
