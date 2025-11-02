@@ -9,11 +9,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 
-import { ChatService, ChatResponse } from '../../features/chat/chat.service';
+import { ChatService, ChatResponse, ToolTrace } from '../../features/chat/services/chat.service';
 
 interface ChatMessage {
   from: 'user' | 'agent';
   text: string;
+  trace?: ToolTrace[]; 
 }
 
 @Component({
@@ -43,7 +44,7 @@ export class ChatPageComponent {
     const prompt = this.input.trim();
     if (!prompt) return;
 
-    // Add user message immediately
+    // User message
     this.messages.push({ from: 'user', text: prompt });
     this.input = '';
     this.loading = true;
@@ -51,10 +52,10 @@ export class ChatPageComponent {
     this.chatService.sendPrompt(prompt).subscribe({
       next: (res: ChatResponse) => {
         this.loading = false;
-        // Add agent reply
+        // Agent reply
         this.messages.push({ from: 'agent', text: res.reply });
 
-        // Optional: show trace info in console for debugging
+        // Trace info for debugging
         console.log('Trace:', res.trace);
       },
       error: (err) => {

@@ -8,13 +8,14 @@ export interface GuardrailResult {
 
 @Injectable({ providedIn: 'root' })
 export class MiniGuardrailsService {
-  // 👇 extend these as needed
+  // Extend banned as needed
   private banned = [
     /(?<!\w)drop\s+table\b/i,
     /(?<!\w)truncate\s+table\b/i,
     /\b(api[_-]?key|password|passwort|token)\b\s*[:=]\s*[^\s'"]+/i,
   ];
 
+  // Personal identity info
   private pii = [
     /\b\d{2,3}-?\d{2,3}-?\d{4,}\b/,             // loose phone/ID
     /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i // email
