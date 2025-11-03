@@ -4,32 +4,37 @@
     </header>
 
     <section class="chat-input" role="form">
-        <mat-form-field appearance="outline" class="input-field">
-            <textarea matInput placeholder="Type your message…" [(ngModel)]="input" (keydown.enter)="send()" rows="3"
-                cdkTextareaAutosize #autosize="cdkTextareaAutosize">
-            </textarea>
+        <mat-form-field class="w-100">
+            <textarea #inputArea matInput [(ngModel)]="input" placeholder="Type a message…" cdkTextareaAutosize
+                [disabled]="loading" (keydown.enter)="onEnter($event)">
+                    </textarea>
         </mat-form-field>
 
-        <button mat-flat-button color="primary" (click)="send()" [disabled]="!input.trim()">
-            Send
-        </button>
+        <button mat-raised-button color="primary" (click)="send()" [disabled]="loading || !input.trim()">Send</button>
     </section>
 
     <section class="chat-section" role="region" aria-label="Chat messages">
         <mat-card>
             <mat-card-content>
                 <mat-list>
-                    <mat-list-item *ngFor="let msg of messages">
-                        <div [ngClass]="msg.from" class="bubble">
-                            {{ msg.text }}
-                        </div>
+                    <mat-list-item *ngFor="let m of messages">
+                        <article class="bubble" [class.me]="m.role === 'user'" role="listitem">
+                            <p>{{ m.text }}</p>
+
+                            <!-- Tool traces (contextual details about the message) -->
+                            <section *ngIf="m.meta?.toolTraces" class="tool-traces" aria-label="Tool traces">
+                                <ul>
+                                    <li *ngFor="let t of m.meta?.toolTraces">
+                                        <small>• {{ t.name }} ({{ t.durationMs }} ms)</small>
+                                    </li>
+                                </ul>
+                            </section>
+                        </article>
                     </mat-list-item>
                 </mat-list>
             </mat-card-content>
         </mat-card>
     </section>
 
-    <footer class="chat-footer" role="contentinfo">
-        &copy; {{ currentYear }} AgentTrace TS
-    </footer>
+    <app-footer></app-footer>
 </main>

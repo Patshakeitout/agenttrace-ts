@@ -15,12 +15,13 @@ import { ChatService, ChatResponse, ToolTrace } from '../../features/chat/servic
 import { MiniGuardrailsService } from '../../features/chat/services/mini-guardrails.service';
 import { TokenService } from '../../features/chat/services/token.service';
 import { TraceService } from '../../features/chat/services/trace.service';
+import { AppFooterComponent } from "../../features/chat/components/app-footer/app-footer/app-footer.component";
 
 
 interface ChatMessage {
-  role: 'user'|'agent'|'system'; 
-  text: string; 
-  meta?: unknown;
+  role: 'user' | 'agent' | 'system';
+  text: string;
+  meta?: { toolTraces?: ToolTrace[] };
 }
 
 @Component({
@@ -32,7 +33,8 @@ interface ChatMessage {
     MatInputModule,
     MatButtonModule,
     MatCardModule,
-    MatListModule
+    MatListModule,
+    AppFooterComponent
   ],
   templateUrl: './chat-page.component.html',
   styleUrls: ['./chat-page.component.scss']
@@ -51,7 +53,7 @@ export class ChatPageComponent {
     private tokens: TokenService,
     private trace: TraceService,
     private snack: MatSnackBar
-  ) {}
+  ) { }
 
   send(): void {
     const prompt = this.input.trim();
@@ -61,7 +63,7 @@ export class ChatPageComponent {
 
     // Guardrails
     const guardRail = this.guard.checkMessage(prompt);
-    this.trace.event('info', 'guardrails.checked', guardRail , span.id);
+    this.trace.event('info', 'guardrails.checked', guardRail, span.id);
 
     if (!guardRail.allowed) {
       this.trace.event('warn', 'guardrails.blocked', { reasons: guardRail.reasons }, span.id);
@@ -84,8 +86,8 @@ export class ChatPageComponent {
         this.tokens.addMessage(res.reply);
 
         // Agent reply
-        this.messages.push({ 
-          role: 'agent', 
+        this.messages.push({
+          role: 'agent',
           text: res.reply,
           meta: { toolTraces: res.trace }
         });
@@ -103,5 +105,13 @@ export class ChatPageComponent {
         queueMicrotask(() => this.inputArea?.nativeElement?.focus());
       }
     });
+  }
+
+  onEnter(event: Event) {
+    const e = event as KeyboardEvent;
+    if (!e.shiftKey) {
+      this.send();
+      e.preventDefault();
+    }
   }
 }
