@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // Material
@@ -26,8 +26,11 @@ interface ChatMessage {
 
 @Component({
   selector: 'app-chat-page',
+  standalone: true,
   imports: [
     CommonModule,
+    NgIf,
+    NgFor,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,

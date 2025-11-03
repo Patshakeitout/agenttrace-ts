@@ -4,13 +4,13 @@
     </header>
 
     <section class="chat-input" role="form">
-        <mat-form-field class="w-100">
+        <mat-form-field class="form-input">
             <textarea #inputArea matInput [(ngModel)]="input" placeholder="Type a message…" cdkTextareaAutosize
                 [disabled]="loading" (keydown.enter)="onEnter($event)">
-                    </textarea>
+            </textarea>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" (click)="send()" [disabled]="loading || !input.trim()">Send</button>
+        <button mat-raised-button (click)="send()" [disabled]="loading || !input.trim()">Send</button>
     </section>
 
     <section class="chat-section" role="region" aria-label="Chat messages">
@@ -19,16 +19,20 @@
                 <mat-list>
                     <mat-list-item *ngFor="let m of messages">
                         <article class="bubble" [class.me]="m.role === 'user'" role="listitem">
-                            <p>{{ m.text }}</p>
+                            <header *ngIf="m.role !== 'user'" class="bubble-header">
+                                <span class="robot-avatar" aria-hidden="true">🤖</span>
+                                <h3 class="sr-only">Agent</h3>
+                            </header>
 
-                            <!-- Tool traces (contextual details about the message) -->
-                            <section *ngIf="m.meta?.toolTraces" class="tool-traces" aria-label="Tool traces">
+                            <p class="message-text">{{ m.text }}</p>
+
+                            <footer *ngIf="m.meta?.toolTraces" class="tool-traces" aria-label="Tool traces">
                                 <ul>
                                     <li *ngFor="let t of m.meta?.toolTraces">
                                         <small>• {{ t.name }} ({{ t.durationMs }} ms)</small>
                                     </li>
                                 </ul>
-                            </section>
+                            </footer>
                         </article>
                     </mat-list-item>
                 </mat-list>

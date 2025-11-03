@@ -18,7 +18,7 @@ app.post('/chat', async (req, res) => {
 
     const { messages } = req.body ?? {};
 
-    if (typeof prompt === 'string' && /summe|bestell|total/i.test(prompt)) { // Regex-literal, case-insensitive
+    if (typeof prompt === 'string' && /sum|order|total/i.test(prompt)) { // Regex-literal, case-insensitive
         const args = { customerId: 42 }; // hardcoded for now
         const result = sumOrders(args.customerId);
         trace.push({ step: 'tool_call', tool: 'sumOrders', args, result });
