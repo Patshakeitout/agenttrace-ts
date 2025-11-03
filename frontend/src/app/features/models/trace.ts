@@ -13,5 +13,5 @@ export interface TraceEvent {
   level: TraceLevel;
   spanId?: string;
   name: string;
-  data?: Record<string, unknown> | string;
+  data?: unknown;
 }

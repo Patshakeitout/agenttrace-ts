@@ -1,1 +1,20 @@
-<p>app-footer works!</p>
+<footer class="footer mat-elevation-z2">
+  <div class="footer__section">
+    <span class="footer__label">Last msg</span>
+    <strong class="footer__value">{{ vm.last }}</strong>
+    <span class="footer__unit">tokens</span>
+  </div>
+
+  <div class="footer__section">
+    <span class="footer__label">Session</span>
+    <strong class="footer__value">{{ vm.session }}</strong>
+    <span class="footer__unit">tokens</span>
+  </div>
+
+  <div class="footer__section">
+    <span class="footer__label">Trace</span>
+    <strong class="footer__value">{{ vm.events }}</strong>
+    <span class="footer__unit">events</span>
+  </div>
+</footer>
+

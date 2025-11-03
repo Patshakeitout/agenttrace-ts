@@ -35,7 +35,7 @@ export class TraceService {
   }
 
   // Adds a custom event to the list and links it to the spanId  
-  event(level: TraceLevel, name: string, data?: Record<string, unknown> | string, spanId?: string) {
+  event(level: TraceLevel, name: string, data?: unknown | string, spanId?: string) {
     const evt: TraceEvent = { ts: Date.now(), level, name, data, spanId };
     this.events$.next([...this.events$.value, evt]);
   }
